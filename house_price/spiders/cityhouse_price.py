@@ -34,7 +34,9 @@ class CityhousePriceSpider(Spider):
     name = 'cityhouse_price'
     allowed_domains = ['cityhouse.cn']
     start_urls = ['http://www.cityhouse.cn/city.html']
-    
+    custom_settings = {
+        "LOG_LEVEL":"INFO"
+    }
     def parse(self, response):
         for url in response.xpath('//td[@class="right_city"]//span[@class="m_d_zx"]//a/@href').extract():
             urls = [url + '/ha/', url + '/forsale/']
@@ -93,11 +95,7 @@ class CityhousePriceSpider(Spider):
         #     kafka_port=kafka_port
         # )])
         all_items = HousePriceItem()
-        result_item = {
-            "data_type": "CITY_HOUSE_PRICE",
-            "rawdata": {response.url: response.text},
-            "crawltime": int(time.time())
-        }
+        
         items = pq(response.text)
         sign = items('div[class="crumbs"] a:nth-of-type(2)').text()
         city = items('div[class="crumbs"] a:nth-of-type(1)').text().replace('房产', '')
@@ -174,6 +172,12 @@ class CityhousePriceSpider(Spider):
             all_items["source_unique"] = source_unique
             all_items["create_ts"] = int(time.time())
             all_items["updated_ts"] = int(time.time())
+            # result_item = {
+            #     "data_type": "CITY_HOUSE_PRICE",
+            #     "rawdata": {response.url: response.text},
+            #     "crawltime": int(time.time()),
+            # }
+            all_items["html_result"] = response.text
             yield all_items
         
             
@@ -224,7 +228,7 @@ def my_job():
     process.start()
 
 
-# @sched.scheduled_job('interval', seconds=86400)
+@sched.scheduled_job('interval', seconds=86400)
 def run():
     process = multiprocessing.Process(target=my_job)
     process.start()

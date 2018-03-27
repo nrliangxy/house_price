@@ -53,7 +53,7 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 # DOWNLOADER_MIDDLEWARES = {
-#    'house_price.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'house_price.middlewares.ProxyMiddleware': 543,
 # }
 
 # Enable or disable extensions
@@ -65,10 +65,10 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-# 'scrapy_mysql_pipeline.MySQLPipeline': 302,
+    # 'scrapy_mysql_pipeline.MySQLPipeline': 302,
     'house_price.pipelines.HousePricePipeline': 300,
-    'house_price.pipelines.MongoPipeline': 301,
-    
+    # 'house_price.pipelines.SaveFilePipeline': 301,
+    'house_price.pipelines.MongoPipeline': 302,
 }
 # MYSQL_HOST = 'localhost'
 # MYSQL_DBNAME = 'cityhouse_price'         #数据库名字，请修改

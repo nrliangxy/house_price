@@ -15,6 +15,7 @@ class HousePriceItem(Item):
     source_unique = Field() #唯一存在 地点 + 小区名字 + 时间+ 钱数 hash
     create_ts = Field()
     updated_ts = Field()
+    html_result = Field()
     #new_house
     new_price_id = Field() #新楼盘一个日期楼盘价格id，例如(2018年02月) 1.70万元/㎡
     location = Field()  # {'city':'杭州,'district':余杭区,'street';解放路}
