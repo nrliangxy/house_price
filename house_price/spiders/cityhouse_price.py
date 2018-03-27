@@ -5,7 +5,6 @@ import time, random, re, json, arrow
 from uuid import uuid1
 # from kafka import KafkaProducer
 from apscheduler.schedulers.blocking import BlockingScheduler
-import time, os
 from house_price.items import HousePriceItem
 from pyquery import PyQuery as pq
 import multiprocessing
@@ -170,8 +169,11 @@ class CityhousePriceSpider(Spider):
                     all_items[relation_dict[item('dt').text()]] = Noise.sub(r',', purpose)
             source_unique = ''.join([str(all_items["location"]), all_items["house_type"], all_items["house_name"],
                                      str(all_items["newest_release_ts"]), str(all_items["unit_price"])])
+            #修改opening_ts已经存储原文件，测试
             source_unique = hashlib.md5(source_unique.encode()).hexdigest()
             all_items["source_unique"] = source_unique
+            all_items["create_ts"] = int(time.time())
+            all_items["updated_ts"] = int(time.time())
             yield all_items
         
             
